@@ -1,0 +1,30 @@
+{
+  "name": "async-race",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"No tests yet\" && exit 0",
+    "build": "echo \"Build skipped for JS\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ermukhanoff007/async-race.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ermukhanoff007/async-race/issues"
+  },
+  "homepage": "https://github.com/ermukhanoff007/async-race#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "jest": "^30.2.0",
+    "prettier": "^3.8.0"
+  }
+}
