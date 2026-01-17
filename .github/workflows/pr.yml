@@ -41,6 +41,16 @@ jobs:
       - name: Build Application
         run: npm run build
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        if: github.event_name == 'push'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+        if: github.event_name == 'push'
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         if: github.event_name == 'push'
