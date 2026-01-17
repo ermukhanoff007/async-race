@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "echo \"No tests yet\" && exit 0",
-    "build": "echo \"Build skipped for JS\" && exit 0"
+    "build": "mkdir -p dist && cp index.html dist/index.html"
   },
   "repository": {
     "type": "git",

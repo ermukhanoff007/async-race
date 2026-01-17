@@ -1,15 +1,20 @@
-name: PR Validation
+name: PR Validation and Deployment
 
 "on":
   push:
-    branches:
-      - "feature/**"
-      - "fix/**"
-
+    branches-ignore:
+      - main
+      - develop
   pull_request:
     branches:
       - main
       - develop
+
+permissions:
+  id-token: write
+  contents: read
+  pages: write
+  pull-requests: write
 
 jobs:
   validate:
@@ -35,3 +40,17 @@ jobs:
 
       - name: Build Application
         run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        if: github.event_name == 'push'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+        if: github.event_name == 'push'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        if: github.event_name == 'push'
