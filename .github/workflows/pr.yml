@@ -1,6 +1,11 @@
 name: PR Validation
 
 "on":
+  push:
+    branches:
+      - "feature/**"
+      - "fix/**"
+
   pull_request:
     branches:
       - main
