@@ -1,56 +1,42 @@
 name: PR Validation and Deployment
 
-"on":
-  push:
-    branches-ignore:
-      - main
-      - develop
+on:
   pull_request:
     branches:
       - main
       - develop
-
-permissions:
-  id-token: write
-  contents: read
-  pages: write
-  pull-requests: write
+  push:
+    branches:
+      - main
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint Checks
-        run: npm run lint
-
-      - name: Run Tests
-        run: npm run test
-
-      - name: Build Application
-        run: npm run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        if: github.event_name == 'push'
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-        if: github.event_name == 'push'
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
-        if: github.event_name == 'push'
+      - uses: actions/deploy-pages@v4
