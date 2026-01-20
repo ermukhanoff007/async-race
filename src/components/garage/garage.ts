@@ -1,5 +1,6 @@
 import { getCars, CARS_PER_PAGE } from "../../api/carApi";
 import { state } from "../../state/state";
+import { createCarIcon } from "../car/car";
 
 export async function renderGarage() {
   const app = document.getElementById("app")!;
