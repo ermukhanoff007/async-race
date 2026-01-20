@@ -1,10 +1,5 @@
 name: PR Validation and Deployment
 
-permissions:
-  id-token: write
-  contents: read
-  pages: write
-
 on:
   pull_request:
     branches:
