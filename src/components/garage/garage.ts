@@ -1,43 +1,5 @@
-import { createCar, deleteCar, getCars, updateCar } from "../../api/carApi";
-import { state, type Car } from "../../state/state";
-import { createCarIcon } from "../car/car";
-
-const getCarsAction = async () => {
-  try {
-    const res = await getCars(state.currentPage);
-    state.cars = res;
-    return res;
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const createCarAction = async (car: Car) => {
-  try {
-    await createCar(car);
-    await getCarsAction();
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const updateCarAction = async (id: number, car: Partial<Car>) => {
-  try {
-    await updateCar(id, car)
-    await getCarsAction()
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const deleteCarAction = async (id: number) => {
-  try {
-    await deleteCar(id);
-    await getCarsAction();
-  } catch (error) {
-    console.log(error)
-  }
-}
+import { getCars, CARS_PER_PAGE } from "../../api/carApi";
+import { state } from "../../state/state";
 
 export async function renderGarage() {
   const app = document.getElementById("app")!;
@@ -58,17 +20,12 @@ export async function renderGarage() {
     <p>Garage <span id="cars-count-span"></span></p>
     <p>Page <span id="current-page-span"></span></p>
     <p id="cars-list">...Loading</p>
-    <div>
-      <button class="button" id="prev-page-btn">Prev</button>
-      <button class="button" id="next-page-cars-btn">Next</button>
-    </div>
-    <p id="error-paragraph"></p>
   `;
 
   try {
-    await getCarsAction();
-    const cars = await getCars(state.currentPage);
+    const { cars, total } = await getCars(state.currentPage);
     state.cars = cars;
+    const totalPages = Math.ceil(total / CARS_PER_PAGE) || 1;
 
     const currentPageSpan = document.getElementById("current-page-span");
     if (currentPageSpan) {
@@ -80,8 +37,8 @@ export async function renderGarage() {
       carsCountSpan.textContent = `(${cars.length.toString()})`;
     }
 
-    const list = document.getElementById("cars-list");
-    list!.innerHTML = cars
+    const list = document.getElementById("cars-list")!;
+    list.innerHTML = cars
       .map(
         (car) => `
       <div>
@@ -101,9 +58,43 @@ export async function renderGarage() {
     `,
       )
       .join("");
+
+    const prevDisabled = state.currentPage <= 1;
+    const nextDisabled = state.currentPage >= totalPages;
+
+    const pagination = document.createElement("div");
+    pagination.className = "pagination";
+    pagination.innerHTML = `
+      <button id="btn-prev" ${prevDisabled ? "disabled" : ""}>Prev</button>
+      <span>Page ${state.currentPage} / ${totalPages}</span>
+      <button id="btn-next" ${nextDisabled ? "disabled" : ""}>Next</button>
+    `;
+    app.append(pagination);
+
+    document.getElementById("btn-prev")!.onclick = () => {
+      if (state.currentPage > 1) {
+        state.currentPage--;
+        renderGarage();
+      }
+    };
+    document.getElementById("btn-next")!.onclick = () => {
+      if (state.currentPage < totalPages) {
+        state.currentPage++;
+        renderGarage();
+      }
+    };
   } catch (error) {
     console.error("Failed to render garage:", error);
-    const list = document.getElementById("cars-list");
-    if (list) list.innerHTML = "Failed to load cars"
+    const list = document.getElementById("cars-list")!;
+    list.innerHTML = "Failed to load cars";
+
+    const pagination = document.createElement("div");
+    pagination.className = "pagination";
+    pagination.innerHTML = `
+      <button id="btn-prev" disabled>Prev</button>
+      <span>Page 1 / 1</span>
+      <button id="btn-next" disabled>Next</button>
+    `;
+    app.append(pagination);
   }
 }
