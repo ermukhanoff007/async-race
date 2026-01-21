@@ -5,13 +5,15 @@ export type Car = {
 };
 
 export type AppState = {
+  isRaced: boolean;
   cars: Car[];
   currentPage: number;
   selectedCar: Car | null;
-  winners: Car[];
+  winners: { car: Car; finishTime: number }[];
 };
 
 export const state: AppState = {
+  isRaced: false,
   cars: [],
   currentPage: 1,
   selectedCar: null,

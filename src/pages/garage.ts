@@ -1,7 +1,7 @@
 import { getCars, CARS_PER_PAGE } from "../api/carApi";
-import { state  } from "../state/state";
+import { state } from "../state/state";
 import { createCarIcon } from "../components/car";
-import { handleCreateCar, handleGenerateCars, handleUpdateCar, handleDeleteCar, handleBrakeCar, handleAccelerateCar } from "../services";
+import { handleCreateCar, handleGenerateCars, handleUpdateCar, handleDeleteCar, handleBrakeCar, handleAccelerateCar, handleRaceCars, handleResetCars } from "../services";
 
 export async function renderGarage() {
   const app = document.getElementById("app")!;
@@ -55,7 +55,9 @@ export async function renderGarage() {
           <button class="carActionButton" id="accelerate-car-btn-${index}">A</button>
           <button class="carActionButton" id="brake-car-btn-${index}">B</button>
           <div class="carContainer">
-            ${createCarIcon({ fill: car.color })}
+            <div class="carParent carParent-${car.id}">
+              ${createCarIcon({ fill: car.color })}
+            </div>
           </div>
           <div class="flag">
             <img src="public/flag.png" alt="Finish Flag" />
@@ -81,20 +83,23 @@ export async function renderGarage() {
     document.getElementById("btn-prev")!.onclick = () => {
       if (state.currentPage > 1) {
         state.currentPage--;
-        state.selectedCar=null
+        state.selectedCar = null
         renderGarage();
       }
     };
     document.getElementById("btn-next")!.onclick = () => {
       if (state.currentPage < totalPages) {
         state.currentPage++;
-        state.selectedCar=null
+        state.selectedCar = null
         renderGarage();
       }
     };
 
     document.getElementById("create-car-btn")!.onclick = handleCreateCar;
     document.getElementById("generate-cars-btn")!.onclick = handleGenerateCars;
+    document.getElementById('race-cars-btn')!.onclick = handleRaceCars;
+
+    document.getElementById('reset-cars-btn')!.onclick = handleResetCars;
 
     if (state.selectedCar) {
       document.getElementById("update-car-btn")!.onclick = handleUpdateCar;
@@ -120,8 +125,8 @@ export async function renderGarage() {
         handleBrakeCar(car.id);
       };
     });
+
   } catch (error) {
-    alert('Failed to render garage')
     const list = document.getElementById("cars-list")!;
     list.innerHTML = "Failed to load cars";
   }

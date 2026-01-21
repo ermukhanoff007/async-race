@@ -21,16 +21,16 @@ export async function carStopped(carId: number): Promise<{ distance: number; vel
   if (!res.ok) {
     throw new Error(`Failed to start car`);
   }
-  
+
   return res.json();
 }
 
 
-export async function carDrive(carId: number): Promise<{success: boolean}> {
+export async function carDrive(carId: number): Promise<{ success: boolean }> {
   const res = await fetch(`${BASE_URL}/engine?id=${carId}&status=drive`, {
     method: "PATCH"
   })
-  if(!res.ok) {
+  if (!res.ok) {
     throw new Error(`Failed to drive car`);
   }
   return res.json();

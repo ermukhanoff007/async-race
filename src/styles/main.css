@@ -11,8 +11,17 @@ body {
 }
 
 .carContainer {
+	width: 100%;
+}
+
+.carParent {
 	width: 36px;
 	height: 36px;
+	transform-origin: center;
+}
+
+.carParent.racing {
+	transition: transform linear;
 }
 
 .carActionButton {
