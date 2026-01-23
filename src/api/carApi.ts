@@ -4,6 +4,38 @@ const BASE_URL: string = (import.meta as any).env.VITE_API_BASE_URL;
 
 export const CARS_PER_PAGE = 7;
 
+export async function carStarted(carId: number): Promise<{ distance: number; velocity: number }> {
+  const res = await fetch(`${BASE_URL}/engine?id=${carId}&status=started`, {
+    method: "PATCH"
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to start car`);
+  }
+  return res.json();
+}
+
+export async function carStopped(carId: number): Promise<{ distance: number; velocity: number }> {
+  const res = await fetch(`${BASE_URL}/engine?id=${carId}&status=stopped`, {
+    method: "PATCH"
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to start car`);
+  }
+
+  return res.json();
+}
+
+
+export async function carDrive(carId: number): Promise<{ success: boolean }> {
+  const res = await fetch(`${BASE_URL}/engine?id=${carId}&status=drive`, {
+    method: "PATCH"
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to drive car`);
+  }
+  return res.json();
+}
+
 export async function getCars(
   page = 1,
   limit = CARS_PER_PAGE
@@ -18,7 +50,7 @@ export async function getCars(
   return { cars, total };
 }
 
-export async function createCar(car: Car): Promise<Car> {
+export async function createCar(car: Omit<Car, 'id'>): Promise<Car> {
   const res = await fetch(`${BASE_URL}/garage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

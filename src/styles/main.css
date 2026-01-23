@@ -7,11 +7,21 @@ body {
 	border-bottom: 1px dashed red;
 	margin: 4px 8px;
 	display: flex;
+	position: relative;
 }
 
 .carContainer {
+	width: 100%;
+}
+
+.carParent {
 	width: 36px;
 	height: 36px;
+	transform-origin: center;
+}
+
+.carParent.racing {
+	transition: transform linear;
 }
 
 .carActionButton {
@@ -94,4 +104,17 @@ body {
 	color: #999;
 	text-shadow: none;
 	box-shadow: none;
+}
+
+
+.flag {
+	position: absolute;
+	top: 0;
+	right: 36px;
+	z-index: 10;
+}
+
+.flag > img {
+	width: 36px;
+	height: 36px;
 }

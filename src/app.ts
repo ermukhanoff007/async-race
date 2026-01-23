@@ -1,6 +1,6 @@
 import { Router } from "./route/router";
-import { renderGarage } from "./components/garage/garage";
-import { renderWinners } from "./components/winner/winner";
+import { renderGarage } from "./pages/garage";
+import { renderWinners } from "./pages/winner";
 
 const router = new Router("app");
 
