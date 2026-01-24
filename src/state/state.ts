@@ -10,6 +10,13 @@ export type AppState = {
   currentPage: number;
   selectedCar: Car | null;
   winners: { car: Car; finishTime: number }[];
+  winnersPage: number;
+};
+
+export type Winner = {
+  id: number;
+  wins: number;
+  time: number;
 };
 
 export const state: AppState = {
@@ -18,4 +25,5 @@ export const state: AppState = {
   currentPage: 1,
   selectedCar: null,
   winners: [],
+  winnersPage: 1,
 };

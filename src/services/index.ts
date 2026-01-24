@@ -3,6 +3,7 @@ import { renderGarage } from "../pages/garage";
 import { state } from "../state/state";
 import { getCarFormDataCreate, getCarFormDataUpdate, generateRandomCarName, generateRandomColor } from "../utils";
 import {showWinnerModal} from "./modal.ts";
+import { createWinner, getWinner, updateWinner } from "../api/winnerApi.ts";
 
 export async function handleAccelerateCar(carId: number): Promise<boolean> {
   try {
@@ -64,9 +65,20 @@ export async function handleRaceCars(): Promise<void> {
     });
 
     const results = await Promise.all(racePromises);
-    results.sort((a, b) => a.finishTime - b.finishTime);
+
     state.winners = results;
     const winner = results[0];
+    const existing = await getWinner(winner.car.id);
+
+    if (!existing) {
+      await createWinner(winner.car.id, winner.finishTime);
+    } else {
+      await updateWinner(
+        winner.car.id,
+        existing.wins + 1,
+        Math.min(existing.time, winner.finishTime),
+      );
+    }
     showWinnerModal(winner.car.name, winner.finishTime);
 
   } catch (error) {
