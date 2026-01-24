@@ -2,6 +2,7 @@ import { createCar, updateCar, deleteCar, carStarted, carStopped, carDrive } fro
 import { renderGarage } from "../pages/garage";
 import { state } from "../state/state";
 import { getCarFormDataCreate, getCarFormDataUpdate, generateRandomCarName, generateRandomColor } from "../utils";
+import {showWinnerModal} from "./modal.ts";
 
 export async function handleAccelerateCar(carId: number): Promise<boolean> {
   try {
@@ -64,7 +65,10 @@ export async function handleRaceCars(): Promise<void> {
 
     const results = await Promise.all(racePromises);
     results.sort((a, b) => a.finishTime - b.finishTime);
-    state.winners = results
+    state.winners = results;
+    const winner = results[0];
+    showWinnerModal(winner.car.name, winner.finishTime);
+
   } catch (error) {
     throw error
   }

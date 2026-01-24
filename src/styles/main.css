@@ -74,6 +74,16 @@ body {
 	top: .2em;
 }
 
+#create-car-input{
+	padding: 10px;
+	border-radius: 10px;
+}
+
+#update-car-input{
+	padding: 10px;
+	border-radius: 10px;
+}
+
 .button-blue {
 	background-color: blue;
 }
@@ -117,4 +127,44 @@ body {
 .flag > img {
 	width: 36px;
 	height: 36px;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal.hidden {
+	display: none;
+}
+
+
+.modal-content {
+	background: #1a1a1a;
+	padding: 24px 32px;
+	border-radius: 12px;
+	text-align: center;
+	color: white;
+	width: 350px;
+	box-shadow: 0 0 20px rgba(255,255,255,0.2);
+	animation: popup 0.3s ease;
+}
+
+@keyframes popup {
+	from {
+		transform: scale(0.6);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
 }
