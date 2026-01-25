@@ -7,19 +7,19 @@
   <link rel="stylesheet" href="/src/styles/main.css" />
 </head>
 <body>
-  <nav>
-    <a class="button" href="#/" id="link-garage">Garage</a>
-    <a class="button" href="#/winners" id="link-winners">Winners</a>
+  <nav aria-label="Main navigation">
+    <a class="button" href="#/" id="link-garage" aria-label="Navigate to Garage page">Garage</a>
+    <a class="button" href="#/winners" id="link-winners" aria-label="Navigate to Winners page">Winners</a>
   </nav>
-  <div id="winner-modal" class="modal hidden">
+  <div id="winner-modal" class="modal hidden" role="dialog" aria-labelledby="modal-title" aria-modal="true" aria-hidden="true">
     <div class="modal-content">
-      <h2 class="modal-title">🏆 Winner!</h2>
-      <p class="modal-body"></p>
-      <button id="modal-close-btn" class="button button-blue">OK</button>
+      <h2 class="modal-title" id="modal-title">🏆 Winner!</h2>
+      <p class="modal-body" id="modal-body"></p>
+      <button id="modal-close-btn" class="button button-blue" aria-label="Close winner modal">OK</button>
     </div>
   </div>
 
-  <div id="app"></div>
+  <main id="app"></main>
 
   <script type="module" src="/src/app.ts"></script>
 </body>

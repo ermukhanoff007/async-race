@@ -1,12 +1,14 @@
 export interface CarIconOptions {
     fill?: string;
     className?: string;
+    ariaLabel?: string;
 }
 
 export function createCarIcon(options: CarIconOptions = {}): string {
     const {
         fill = "#000000",
-        className = ""
+        className = "",
+        ariaLabel = "Car icon"
     } = options;
 
     return `<svg 
@@ -21,6 +23,8 @@ export function createCarIcon(options: CarIconOptions = {}): string {
     height="36px"
     transform="matrix(-1, 0, 0, 1, 0, 0)"
     class="${className}"
+    role="img"
+    aria-label="${ariaLabel}"
   >
     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
