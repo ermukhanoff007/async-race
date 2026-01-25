@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "lint": "eslint .",
-    "test": "echo \"No tests yet\" && exit 0",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "build": "vite build"
   },
   "repository": {
@@ -16,17 +17,20 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/ermukhanoff007/async-race/issues"
   },
   "homepage": "https://github.com/ermukhanoff007/async-race#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@types/jest": "^30.0.0",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
     "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "prettier": "^3.8.1",
+    "ts-jest": "^29.4.6",
     "typescript": "^5.1.6",
     "vite": "^7.3.1"
   }
