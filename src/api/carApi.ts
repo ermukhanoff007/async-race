@@ -1,7 +1,6 @@
 import type { Car } from '../state/state';
 
-const viteEnv = import.meta?.env;
-const BASE_URL = viteEnv?.VITE_API_BASE_URL ?? process.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const CARS_PER_PAGE = 7;
 

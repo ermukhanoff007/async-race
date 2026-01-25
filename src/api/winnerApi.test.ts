@@ -2,11 +2,9 @@ import { getWinner, getCarById, getWinners, createWinner, updateWinner } from '.
 
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 
-// Properly typed global fetch mock
 const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;
 globalThis.fetch = mockFetch;
 
-// Mock BASE_URL via process.env (should be set in setup.ts or fallback in code)
 beforeAll(() => {
   process.env.VITE_API_BASE_URL = 'http://localhost:3000';
 });
@@ -16,9 +14,6 @@ describe('Winners & Garage API functions', () => {
     mockFetch.mockClear();
   });
 
-  // ────────────────────────────────────────────────
-  // getWinner
-  // ────────────────────────────────────────────────
   describe('getWinner', () => {
     it('returns winner data when found', async () => {
       const mockWinner = { id: 5, wins: 3, time: 12.34 };
@@ -57,9 +52,6 @@ describe('Winners & Garage API functions', () => {
     });
   });
 
-  // ────────────────────────────────────────────────
-  // getCarById
-  // ────────────────────────────────────────────────
   describe('getCarById', () => {
     it('returns car data when found', async () => {
       const mockCar = { id: 42, name: 'Ferrari', color: 'red' };
@@ -97,9 +89,6 @@ describe('Winners & Garage API functions', () => {
     });
   });
 
-  // ────────────────────────────────────────────────
-  // getWinners (paginated)
-  // ────────────────────────────────────────────────
   describe('getWinners', () => {
     it('returns winners and total count from header', async () => {
       const mockWinners = [
@@ -148,9 +137,6 @@ describe('Winners & Garage API functions', () => {
     });
   });
 
-  // ────────────────────────────────────────────────
-  // createWinner
-  // ────────────────────────────────────────────────
   describe('createWinner', () => {
     it('creates and returns new winner', async () => {
       const newWinner = { id: 100, wins: 1, time: 14.88 };
@@ -176,9 +162,6 @@ describe('Winners & Garage API functions', () => {
     });
   });
 
-  // ────────────────────────────────────────────────
-  // updateWinner
-  // ────────────────────────────────────────────────
   describe('updateWinner', () => {
     it('updates and returns winner', async () => {
       const updated = { id: 7, wins: 5, time: 11.22 };

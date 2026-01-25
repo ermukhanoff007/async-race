@@ -24,7 +24,7 @@ export async function handleAccelerateCar(carId: number): Promise<boolean> {
 
       try {
         await carDrive(carId);
-        return true;
+        return state.isRaceRunning;
       } catch (error) {
         const computedStyle = window.getComputedStyle(carParent);
         const currentTransform = computedStyle.transform;
@@ -62,6 +62,7 @@ export async function handleBrakeCar(carId: number): Promise<void> {
 
 export async function handleRaceCars(): Promise<void> {
   try {
+    state.isRaceRunning = true;
     const racePromises = state.cars.map(async (car) => {
       const startTime = Date.now();
       const isFinished = await handleAccelerateCar(car.id);
@@ -70,6 +71,7 @@ export async function handleRaceCars(): Promise<void> {
     });
 
     const results = await Promise.all(racePromises);
+    if (!state.isRaceRunning) return;
     results.sort((a, b) => a.finishTime - b.finishTime);
     state.winners = results;
     const winner = results[0];
@@ -87,13 +89,18 @@ export async function handleRaceCars(): Promise<void> {
     showWinnerModal(winner.car.name, winner.finishTime);
   } catch (error) {
     throw error;
+  } finally {
+    state.isRaceRunning = false;
   }
 }
 
 export async function handleResetCars(): Promise<void> {
   try {
+    state.isRaceRunning = false;
     const promises = state.cars.map((car) => handleBrakeCar(car.id));
     await Promise.all(promises);
+    const modal = document.querySelector('.winner-modal');
+    if (modal) modal.remove();
   } catch (error) {
     throw error;
   }
