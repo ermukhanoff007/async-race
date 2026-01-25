@@ -1,10 +1,19 @@
-import { getCars, CARS_PER_PAGE } from "../api/carApi";
-import { state } from "../state/state";
-import { createCarIcon } from "../components/car";
-import { handleCreateCar, handleGenerateCars, handleUpdateCar, handleDeleteCar, handleBrakeCar, handleAccelerateCar, handleRaceCars, handleResetCars } from "../services";
+import { getCars, CARS_PER_PAGE } from '../api/carApi';
+import { state } from '../state/state';
+import { createCarIcon } from '../components/car';
+import {
+  handleCreateCar,
+  handleGenerateCars,
+  handleUpdateCar,
+  handleDeleteCar,
+  handleBrakeCar,
+  handleAccelerateCar,
+  handleRaceCars,
+  handleResetCars,
+} from '../services';
 
 export async function renderGarage() {
-  const app = document.getElementById("app")!;
+  const app = document.getElementById('app')!;
   app.innerHTML = `
     <div style="margin-bottom: 12px">
       <input type="text" id="create-car-input" placeholder="Enter car name" />
@@ -12,9 +21,9 @@ export async function renderGarage() {
       <button class="button button-blue" id="create-car-btn">Create Car</button>
     </div>
     <div style="margin-bottom: 12px">
-      <input type="text" id="update-car-input" placeholder="Update selected car name" ${!state.selectedCar ? "disabled" : ""} />
-      <input type="color" id="update-car-color" value="#FFFFFF" ${!state.selectedCar ? "disabled" : ""} />
-      <button class="button button-blue" id="update-car-btn" ${!state.selectedCar ? "disabled" : ""}>Update Car</button>
+      <input type="text" id="update-car-input" placeholder="Update selected car name" ${!state.selectedCar ? 'disabled' : ''} />
+      <input type="color" id="update-car-color" value="#FFFFFF" ${!state.selectedCar ? 'disabled' : ''} />
+      <button class="button button-blue" id="update-car-btn" ${!state.selectedCar ? 'disabled' : ''}>Update Car</button>
     </div>
     <div>
       <button class="button button-green" id="race-cars-btn">Race Cars</button>
@@ -31,17 +40,17 @@ export async function renderGarage() {
     state.cars = cars;
     const totalPages = Math.ceil(total / CARS_PER_PAGE) || 1;
 
-    const currentPageSpan = document.getElementById("current-page-span");
+    const currentPageSpan = document.getElementById('current-page-span');
     if (currentPageSpan) {
       currentPageSpan.textContent = `#${state.currentPage.toString()}/${totalPages.toString()}`;
     }
 
-    const carsCountSpan = document.getElementById("cars-count-span");
+    const carsCountSpan = document.getElementById('cars-count-span');
     if (carsCountSpan) {
       carsCountSpan.textContent = `(${total.toString()})`;
     }
 
-    const list = document.getElementById("cars-list")!;
+    const list = document.getElementById('cars-list')!;
     list.innerHTML = cars
       .map(
         (car, index) => `
@@ -66,48 +75,47 @@ export async function renderGarage() {
       </div>
     `,
       )
-      .join("");
-
+      .join('');
 
     const prevDisabled = state.currentPage <= 1;
     const nextDisabled = state.currentPage >= totalPages;
 
-    const pagination = document.createElement("div");
-    pagination.className = "pagination";
+    const pagination = document.createElement('div');
+    pagination.className = 'pagination';
     pagination.innerHTML = `
-      <button class="button" id="btn-prev" ${prevDisabled ? "disabled" : ""}>Prev</button>
-      <button class="button" id="btn-next" ${nextDisabled ? "disabled" : ""}>Next</button>
+      <button class="button" id="btn-prev" ${prevDisabled ? 'disabled' : ''}>Prev</button>
+      <button class="button" id="btn-next" ${nextDisabled ? 'disabled' : ''}>Next</button>
     `;
     app.append(pagination);
 
-    document.getElementById("btn-prev")!.onclick = () => {
+    document.getElementById('btn-prev')!.onclick = () => {
       if (state.currentPage > 1) {
         state.currentPage--;
-        state.selectedCar = null
+        state.selectedCar = null;
         renderGarage();
       }
     };
-    document.getElementById("btn-next")!.onclick = () => {
+    document.getElementById('btn-next')!.onclick = () => {
       if (state.currentPage < totalPages) {
         state.currentPage++;
-        state.selectedCar = null
+        state.selectedCar = null;
         renderGarage();
       }
     };
 
-    document.getElementById("create-car-btn")!.onclick = handleCreateCar;
-    document.getElementById("generate-cars-btn")!.onclick = handleGenerateCars;
+    document.getElementById('create-car-btn')!.onclick = handleCreateCar;
+    document.getElementById('generate-cars-btn')!.onclick = handleGenerateCars;
     document.getElementById('race-cars-btn')!.onclick = handleRaceCars;
 
     document.getElementById('reset-cars-btn')!.onclick = handleResetCars;
 
     if (state.selectedCar) {
-      document.getElementById("update-car-btn")!.onclick = handleUpdateCar;
+      document.getElementById('update-car-btn')!.onclick = handleUpdateCar;
     }
 
     if (state.selectedCar) {
-      const updateNameInput = document.getElementById("update-car-input") as HTMLInputElement;
-      const updateColorInput = document.getElementById("update-car-color") as HTMLInputElement;
+      const updateNameInput = document.getElementById('update-car-input') as HTMLInputElement;
+      const updateColorInput = document.getElementById('update-car-color') as HTMLInputElement;
       updateNameInput.value = state.selectedCar.name;
       updateColorInput.value = state.selectedCar.color;
     }
@@ -125,9 +133,8 @@ export async function renderGarage() {
         handleBrakeCar(car.id);
       };
     });
-
   } catch (error) {
-    const list = document.getElementById("cars-list")!;
-    list.innerHTML = "Failed to load cars";
+    const list = document.getElementById('cars-list')!;
+    list.innerHTML = 'Failed to load cars';
   }
 }
