@@ -1,6 +1,7 @@
 import { getCars, CARS_PER_PAGE } from '../api/carApi';
 import { state } from '../state/state';
 import { createCarIcon } from '../components/car';
+import finishFlag from '../assets/flag.png';
 import {
   handleCreateCar,
   handleGenerateCars,
@@ -80,7 +81,7 @@ export async function renderGarage() {
             </div>
           </div>
           <div class="flag">
-            <img src="public/flag.png" alt="Finish Flag" />
+            <img src="${finishFlag}" alt="Finish Flag" />
           </div>
         </div>
       </div>
