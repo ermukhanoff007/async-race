@@ -10,7 +10,6 @@ export function showWinnerModal(carName: string, time: number) {
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
     
-    // Focus trap: focus on close button
     closeBtn.focus();
 
     const handleClose = () => {
@@ -20,7 +19,7 @@ export function showWinnerModal(carName: string, time: number) {
 
     closeBtn.onclick = handleClose;
 
-    // Close on Escape key
+
     const handleEscape = (e: KeyboardEvent) => {
         if (e.key === "Escape" && !modal.classList.contains("hidden")) {
             handleClose();
