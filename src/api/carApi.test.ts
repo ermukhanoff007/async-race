@@ -6,13 +6,15 @@ import {
   createCar,
   updateCar,
   deleteCar,
-} from './carApi.ts'; // ← .js for ESM/NodeNext resolution
+} from './carApi.ts';
 
 import type { Car } from '../state/state.js';
 
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 
-// Properly typed global fetch mock (fixes TS2345 / never issues)
+jest.mock('../config', () => ({
+  BASE_URL: 'http://localhost:3000',
+}));
 const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;
 globalThis.fetch = mockFetch;
 
@@ -23,12 +25,11 @@ describe('carApi', () => {
     mockFetch.mockClear();
   });
 
-  // ===== carStarted =====
   it('carStarted should return distance and velocity', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ distance: 100, velocity: 50 }),
-    } as Response); // type assertion helps if TS picky
+    } as Response);
 
     const result = await carStarted(1);
     expect(result).toEqual({ distance: 100, velocity: 50 });
@@ -44,7 +45,6 @@ describe('carApi', () => {
     await expect(carStarted(1)).rejects.toThrow('Failed to start car');
   });
 
-  // ===== carStopped =====
   it('carStopped should return distance and velocity', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -61,7 +61,6 @@ describe('carApi', () => {
     await expect(carStopped(1)).rejects.toThrow('Failed to start car');
   });
 
-  // ===== carDrive =====
   it('carDrive should return success', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -78,7 +77,6 @@ describe('carApi', () => {
     await expect(carDrive(1)).rejects.toThrow('Failed to drive car');
   });
 
-  // ===== getCars =====
   it('getCars should return cars and total', async () => {
     const cars = [mockCar];
 
@@ -102,7 +100,6 @@ describe('carApi', () => {
     await expect(getCars()).rejects.toThrow('Failed to fetch cars: 500 Error');
   });
 
-  // ===== createCar =====
   it('createCar should return created car', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -125,7 +122,6 @@ describe('carApi', () => {
     );
   });
 
-  // ===== updateCar =====
   it('updateCar should return updated car', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -148,7 +144,6 @@ describe('carApi', () => {
     );
   });
 
-  // ===== deleteCar =====
   it('deleteCar should succeed', async () => {
     mockFetch.mockResolvedValueOnce({ ok: true } as Response);
 

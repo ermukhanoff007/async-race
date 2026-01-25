@@ -1,8 +1,8 @@
 import type { Car } from '../state/state';
 
-const viteEnv = import.meta?.env;
-const BASE_URL = viteEnv?.VITE_API_BASE_URL ?? process.env.VITE_API_BASE_URL;
+import { getBaseUrl } from '../config';
 
+const BASE_URL = getBaseUrl();
 export const CARS_PER_PAGE = 7;
 
 export async function carStarted(carId: number): Promise<{ distance: number; velocity: number }> {
