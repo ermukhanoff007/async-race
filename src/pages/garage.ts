@@ -15,24 +15,35 @@ import {
 export async function renderGarage() {
   const app = document.getElementById('app')!;
   app.innerHTML = `
-    <div style="margin-bottom: 12px">
-      <input type="text" id="create-car-input" placeholder="Enter car name" />
-      <input type="color" id="create-car-color" value="#FFFFFF" />
-      <button class="button button-blue" id="create-car-btn">Create Car</button>
-    </div>
-    <div style="margin-bottom: 12px">
-      <input type="text" id="update-car-input" placeholder="Update selected car name" ${!state.selectedCar ? 'disabled' : ''} />
-      <input type="color" id="update-car-color" value="#FFFFFF" ${!state.selectedCar ? 'disabled' : ''} />
-      <button class="button button-blue" id="update-car-btn" ${!state.selectedCar ? 'disabled' : ''}>Update Car</button>
-    </div>
-    <div>
-      <button class="button button-green" id="race-cars-btn">Race Cars</button>
-      <button class="button button-red" id="reset-cars-btn">Reset</button>
-      <button class="button button-blue" id="generate-cars-btn">Generate Cars</button>
-    </div>
-    <p>Garage <span id="cars-count-span"></span></p>
-    <p>Page <span id="current-page-span"></span></p>
-    <p id="cars-list">...Loading</p>
+    <h1>Garage</h1>
+    <section aria-label="Create new car">
+      <div style="margin-bottom: 12px">
+        <label for="create-car-input" class="sr-only">Car name</label>
+        <input type="text" id="create-car-input" placeholder="Enter car name" aria-label="Enter car name" />
+        <label for="create-car-color" class="sr-only">Car color</label>
+        <input type="color" id="create-car-color" value="#FFFFFF" aria-label="Select car color" />
+        <button class="button button-blue" id="create-car-btn" aria-label="Create new car">Create Car</button>
+      </div>
+    </section>
+    <section aria-label="Update selected car">
+      <div style="margin-bottom: 12px">
+        <label for="update-car-input" class="sr-only">Car name to update</label>
+        <input type="text" id="update-car-input" placeholder="Update selected car name" ${!state.selectedCar ? 'disabled' : ''} aria-label="Update selected car name" />
+        <label for="update-car-color" class="sr-only">Car color to update</label>
+        <input type="color" id="update-car-color" value="#FFFFFF" ${!state.selectedCar ? 'disabled' : ''} aria-label="Update selected car color" />
+        <button class="button button-blue" id="update-car-btn" ${!state.selectedCar ? 'disabled' : ''} aria-label="Update selected car">Update Car</button>
+      </div>
+    </section>
+    <section aria-label="Race controls">
+      <div>
+        <button class="button button-green" id="race-cars-btn" aria-label="Start race with all cars">Race Cars</button>
+        <button class="button button-red" id="reset-cars-btn" aria-label="Reset all cars to start position">Reset</button>
+        <button class="button button-blue" id="generate-cars-btn" aria-label="Generate random cars">Generate Cars</button>
+      </div>
+    </section>
+    <p>Garage <span id="cars-count-span" aria-live="polite"></span></p>
+    <p>Page <span id="current-page-span" aria-live="polite"></span></p>
+    <div id="cars-list" role="list" aria-label="List of cars">...Loading</div>
   `;
 
   try {
@@ -54,18 +65,18 @@ export async function renderGarage() {
     list.innerHTML = cars
       .map(
         (car, index) => `
-      <div>
+      <div role="listitem" aria-label="Car ${car.name}">
         <div>
-          <button class="button" id="select-car-btn-${index}">Select</button>
-          <button class="button" id="delete-car-btn-${index}">Remove</button>
-          ${car.name}
+          <button class="button" id="select-car-btn-${index}" aria-label="Select car ${car.name}">Select</button>
+          <button class="button" id="delete-car-btn-${index}" aria-label="Remove car ${car.name}">Remove</button>
+          <span>${car.name}</span>
         </div>
-        <div class="way">
-          <button class="carActionButton" id="accelerate-car-btn-${index}">A</button>
-          <button class="carActionButton" id="brake-car-btn-${index}">B</button>
+        <div class="way" role="region" aria-label="Race track for ${car.name}">
+          <button class="carActionButton" id="accelerate-car-btn-${index}" aria-label="Accelerate ${car.name}">A</button>
+          <button class="carActionButton" id="brake-car-btn-${index}" aria-label="Brake ${car.name}">B</button>
           <div class="carContainer">
-            <div class="carParent carParent-${car.id}">
-              ${createCarIcon({ fill: car.color })}
+            <div class="carParent carParent-${car.id}" aria-label="Car ${car.name}">
+              ${createCarIcon({ fill: car.color, ariaLabel: `Car ${car.name}` })}
             </div>
           </div>
           <div class="flag">
@@ -82,9 +93,11 @@ export async function renderGarage() {
 
     const pagination = document.createElement('div');
     pagination.className = 'pagination';
+    pagination.setAttribute('role', 'navigation');
+    pagination.setAttribute('aria-label', 'Pagination');
     pagination.innerHTML = `
-      <button class="button" id="btn-prev" ${prevDisabled ? 'disabled' : ''}>Prev</button>
-      <button class="button" id="btn-next" ${nextDisabled ? 'disabled' : ''}>Next</button>
+      <button class="button" id="btn-prev" ${prevDisabled ? 'disabled' : ''} aria-label="Go to previous page">Prev</button>
+      <button class="button" id="btn-next" ${nextDisabled ? 'disabled' : ''} aria-label="Go to next page">Next</button>
     `;
     app.append(pagination);
 

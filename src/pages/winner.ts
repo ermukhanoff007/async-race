@@ -8,16 +8,17 @@ export async function renderWinners() {
   const app = document.getElementById("app")!;
   app.innerHTML = `
     <h1>🏆 Winners</h1>
-    <p>Total: <span id="winners-total"></span></p>
+    <p>Total: <span id="winners-total" aria-live="polite"></span></p>
 
-    <table class="winners-table">
+    <table class="winners-table" role="table" aria-label="Winners table">
+      <caption class="sr-only">Table showing race winners with their car, name, number of wins, and best time</caption>
       <thead>
         <tr>
-          <th>#</th>
-          <th>Car</th>
-          <th>Name</th>
-          <th  class="wins">Wins</th>
-          <th  class="time">Best Time (s)</th>
+          <th scope="col">#</th>
+          <th scope="col">Car</th>
+          <th scope="col">Name</th>
+          <th scope="col" class="wins">Wins</th>
+          <th scope="col" class="time">Best Time (s)</th>
         </tr>
       </thead>
       <tbody id="winners-body">
@@ -25,9 +26,9 @@ export async function renderWinners() {
       </tbody>
     </table>
 
-    <div class="pagination">
-      <button id="btn-prev" class="button">Prev</button>
-      <button id="btn-next" class="button">Next</button>
+    <div class="pagination" role="navigation" aria-label="Winners pagination">
+      <button id="btn-prev" class="button" aria-label="Go to previous page">Prev</button>
+      <button id="btn-next" class="button" aria-label="Go to next page">Next</button>
     </div>
   `;
 
@@ -56,7 +57,7 @@ async function loadWinnersTable() {
     rows.push(`
       <tr>
         <td>${i + 1}</td>
-        <td>${car ? createCarIcon({ fill: car.color }) : "-"}</td>
+        <td>${car ? createCarIcon({ fill: car.color, ariaLabel: `Car ${car.name}` }) : "-"}</td>
         <td>${car ? car.name : "Deleted"}</td>
         <td>${w.wins}</td>
         <td>${(w.time/1000).toFixed(2)}</td>
