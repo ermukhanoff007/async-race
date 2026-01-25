@@ -1,6 +1,10 @@
-import { getWinner, getCarById, getWinners, createWinner, updateWinner } from './winnerApi.ts'; // adjust path + .js if using NodeNext / "type": "module"
+import { getWinner, getCarById, getWinners, createWinner, updateWinner } from './winnerApi.ts';
 
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+
+jest.mock('../config', () => ({
+  BASE_URL: 'http://localhost:3000',
+}));
 
 const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;
 globalThis.fetch = mockFetch;

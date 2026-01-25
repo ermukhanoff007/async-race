@@ -1,7 +1,8 @@
 import type { Car, Winner } from '../state/state.ts';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { getBaseUrl } from '../config';
 
+const BASE_URL = getBaseUrl();
 export async function getWinner(id: number): Promise<Winner | null> {
   const res = await fetch(`${BASE_URL}/winners/${id}`);
   if (res.status === 404) return null;
