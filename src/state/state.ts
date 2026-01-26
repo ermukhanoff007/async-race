@@ -5,13 +5,27 @@ export type Car = {
 };
 
 export type AppState = {
+  isRaced: boolean;
   cars: Car[];
   currentPage: number;
-  winners: Car[];
+  selectedCar: Car | null;
+  winners: { car: Car; finishTime: number }[];
+  winnersPage: number;
+  isRaceRunning: boolean;
+};
+
+export type Winner = {
+  id: number;
+  wins: number;
+  time: number;
 };
 
 export const state: AppState = {
+  isRaced: false,
   cars: [],
   currentPage: 1,
+  selectedCar: null,
   winners: [],
+  winnersPage: 1,
+  isRaceRunning: false,
 };

@@ -1,0 +1,194 @@
+body {
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.way {
+	border-bottom: 1px dashed red;
+	margin: 4px 8px;
+	display: flex;
+	position: relative;
+}
+
+.carContainer {
+	width: 100%;
+}
+
+.carParent {
+	width: 36px;
+	height: 36px;
+	transform-origin: center;
+}
+
+.carParent.racing {
+	transition: transform linear;
+}
+
+.carActionButton {
+  text-shadow: 1px 1px pink, -1px -1px maroon;
+  line-height: 1.5;
+  text-align: center;
+  display: inline-block;
+  width: 1.5em;
+  border-radius: .75em;
+  background: linear-gradient(135deg, pink 3%, red 22%, maroon 99%);
+  color: red;
+  margin: 5px;
+  box-shadow: 0 .2em maroon;
+  cursor: pointer;
+  padding-left: 5px;
+}
+
+.button {
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+  padding: 4px 6px;
+  background-color: #d3d3d3;
+  text-shadow: -1px -1px #000, 1px 1px #fff;
+  letter-spacing: 2px;
+  color: #808080;
+  border-radius: 7px;
+  box-shadow: 0 .2em #808080;
+  cursor: pointer;
+}
+.carActionButton:active, .button:active {
+	box-shadow: none;
+	position: relative;
+	top: .2em;
+}
+
+#create-car-input{
+	padding: 10px;
+	border-radius: 10px;
+}
+
+#update-car-input{
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.button-blue {
+	background-color: blue;
+}
+.button-green {
+	background-color: green;
+}
+.button-red {
+	background-color: red;
+}
+
+.button:disabled,
+.carActionButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.button:disabled {
+	background-color: #666;
+	color: #999;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.carActionButton:disabled {
+	background-color: #666;
+	background-image: none;
+	color: #999;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.winners-table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  color: white;
+}
+
+.winners-table th,
+.winners-table td {
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  text-align: center;
+}
+
+.sortable {
+  cursor: pointer;
+  color: #7af;
+}
+
+.sortable:hover {
+  text-decoration: underline;
+}
+
+.winners-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.flag {
+	position: absolute;
+	top: 0;
+	right: 36px;
+	z-index: 10;
+}
+
+.flag > img {
+	width: 36px;
+	height: 36px;
+	display: block;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal.hidden {
+	display: none;
+}
+
+
+.modal-content {
+	background: #1a1a1a;
+	padding: 24px 32px;
+	border-radius: 12px;
+	text-align: center;
+	color: white;
+	width: 350px;
+	box-shadow: 0 0 20px rgba(255,255,255,0.2);
+	animation: popup 0.3s ease;
+}
+
+@keyframes popup {
+	from {
+		transform: scale(0.6);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
