@@ -81,7 +81,7 @@ export async function renderGarage() {
             </div>
           </div>
           <div class="flag">
-            <img src="${finishFlag}" alt="Finish Flag" />
+            <img src="${finishFlag}" alt="Finish Flag" loading="lazy" width="36" height="36" decoding="async" />
           </div>
         </div>
       </div>
