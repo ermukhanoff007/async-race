@@ -4,6 +4,49 @@ import { createCarIcon } from "../components/car";
 import { state } from "../state/state";
 import { getCarById, getWinners } from "../api/winnerApi.ts";
 
+const loadWinnersTable = async () => {
+  const body = document.getElementById("winners-body")!;
+  body.innerHTML = "<tr><td colspan='5'>Loading...</td></tr>";
+
+  try {
+    const { winners, total } = await getWinners(
+      state.winnersPage || 1,
+      CARS_PER_PAGE,
+    );
+
+    document.getElementById("winners-total")!.textContent = total.toString();
+
+    const fragment = document.createDocumentFragment();
+    const tempDiv = document.createElement('div');
+    
+    const rowsHTML = await Promise.all(
+      winners.map(async (w, i) => {
+        const car = await getCarById(w.id);
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${car ? createCarIcon({ fill: car.color, ariaLabel: `Car ${car.name}` }) : "-"}</td>
+            <td>${car ? car.name : "Deleted"}</td>
+            <td>${w.wins}</td>
+            <td>${(w.time/1000).toFixed(2)}</td>
+          </tr>
+        `;
+      })
+    );
+    
+    tempDiv.innerHTML = rowsHTML.join('');
+    
+    while (tempDiv.firstChild) {
+      fragment.appendChild(tempDiv.firstChild);
+    }
+    
+    body.innerHTML = '';
+    body.appendChild(fragment);
+  } catch (error) {
+    body.innerHTML = '<tr><td colspan="5">Failed to load winners</td></tr>';
+  }
+};
+
 export async function renderWinners() {
   const app = document.getElementById("app")!;
   app.innerHTML = `
@@ -33,53 +76,21 @@ export async function renderWinners() {
   `;
 
   await loadWinnersTable();
-  initPagination();
-}
+  
+  const initPagination = () => {
+    document.getElementById("btn-prev")!.onclick = () => {
+      if (state.winnersPage > 1) {
+        state.winnersPage--;
+        loadWinnersTable();
+      }
+    };
 
-async function loadWinnersTable() {
-  const body = document.getElementById("winners-body")!;
-  body.innerHTML = "<tr><td colspan='5'>Loading...</td></tr>";
-
-  const { winners, total } = await getWinners(
-    state.winnersPage || 1,
-    CARS_PER_PAGE,
-
-  );
-
-  document.getElementById("winners-total")!.textContent = total.toString();
-
-  const rows = [];
-
-  for (let i = 0; i < winners.length; i++) {
-    const w = winners[i];
-    const car = await getCarById(w.id);
-
-    rows.push(`
-      <tr>
-        <td>${i + 1}</td>
-        <td>${car ? createCarIcon({ fill: car.color, ariaLabel: `Car ${car.name}` }) : "-"}</td>
-        <td>${car ? car.name : "Deleted"}</td>
-        <td>${w.wins}</td>
-        <td>${(w.time/1000).toFixed(2)}</td>
-      </tr>
-    `);
-  }
-
-  body.innerHTML = rows.join("");
-}
-
-
-
-function initPagination() {
-  document.getElementById("btn-prev")!.onclick = () => {
-    if (state.winnersPage > 1) {
-      state.winnersPage--;
+    document.getElementById("btn-next")!.onclick = () => {
+      state.winnersPage++;
       loadWinnersTable();
     }
   };
-
-  document.getElementById("btn-next")!.onclick = () => {
-    state.winnersPage++;
-    loadWinnersTable();
-  };
+  
+  initPagination();
 }
+
